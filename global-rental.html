@@ -33,7 +33,7 @@
             <button onclick="filterIndiaCity('Pune')" id="btn-city-Pune" class="city-btn w-full text-left text-sm px-4 py-2.5 rounded-lg font-medium text-gray-600 hover:bg-gray-100 transition">Pune</button>
         </aside>
 
-        <!-- CENTER WORKSPACE: Country Navigation & Listings Grid -->
+        <!-- RIGHT WORKSPACE: Country Navigation & Listings Grid -->
         <main class="flex-1 flex flex-col min-w-0 bg-gray-50 overflow-y-auto p-6">
             
             <!-- Main Tabs Container -->
@@ -46,50 +46,13 @@
             </div>
 
             <!-- Properties Grid Content panels -->
-            <div id="india" class="tab-content active grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6 pb-12"></div>
-            <div id="usa" class="tab-content grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6 pb-12"></div>
-            <div id="uk" class="tab-content grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6 pb-12"></div>
-            <div id="canada" class="tab-content grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6 pb-12"></div>
-            <div id="uae" class="tab-content grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6 pb-12"></div>
+            <div id="india" class="tab-content active grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-12"></div>
+            <div id="usa" class="tab-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-12"></div>
+            <div id="uk" class="tab-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-12"></div>
+            <div id="canada" class="tab-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-12"></div>
+            <div id="uae" class="tab-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-12"></div>
 
         </main>
-
-        <!-- RIGHT SIDEBAR: Commercial Advertisements -->
-        <aside class="w-64 bg-gray-50 border-l border-gray-200 p-4 flex flex-col space-y-4 overflow-y-auto shrink-0">
-            <h2 class="text-xs font-bold text-gray-400 uppercase tracking-wider px-1">Sponsored</h2>
-            
-            <!-- Ad Slot 1 -->
-            <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow transition group cursor-pointer">
-                <div class="bg-gradient-to-r from-amber-400 to-orange-500 h-28 flex items-center justify-center text-white font-black text-xl tracking-wider">
-                    HOME LOANS
-                </div>
-                <div class="p-3">
-                    <span class="text-[9px] bg-amber-100 text-amber-800 font-bold px-1.5 py-0.5 rounded">Ad</span>
-                    <h3 class="text-xs font-bold mt-1 text-gray-900 group-hover:text-blue-600 transition">Instant Approval Loans</h3>
-                    <p class="text-[11px] text-gray-500 mt-0.5">Get rental deposits & home buyers support up to 80% funding. Low interest rates!</p>
-                </div>
-            </div>
-
-            <!-- Ad Slot 2 -->
-            <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow transition group cursor-pointer">
-                <div class="bg-gradient-to-r from-purple-500 to-indigo-600 h-28 flex items-center justify-center text-white font-black text-xl tracking-wider">
-                    PACKERS
-                </div>
-                <div class="p-3">
-                    <span class="text-[9px] bg-amber-100 text-amber-800 font-bold px-1.5 py-0.5 rounded">Ad</span>
-                    <h3 class="text-xs font-bold mt-1 text-gray-900 group-hover:text-blue-600 transition">Shift Smoothly</h3>
-                    <p class="text-[11px] text-gray-500 mt-0.5">Professional packing and moving services. Flat 15% off on your first city relocation.</p>
-                </div>
-            </div>
-
-            <!-- Ad Slot 3 -->
-            <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 text-center flex flex-col justify-center items-center">
-                <p class="text-xs font-bold text-blue-900">Want your property featured here?</p>
-                <p class="text-[11px] text-blue-600 mt-1">Boost visibility by 10x with our premium display packages.</p>
-                <a href="mailto:advertise@globalrentals.com" class="mt-3 inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold text-[11px] px-4 py-1.5 rounded-lg shadow transition">Advertise Here</a>
-            </div>
-        </aside>
-
     </div>
 
     <!-- JavaScript Core Logic -->
@@ -166,7 +129,13 @@
         if(!localStorage.getItem('staticRentalAds')) {
             localStorage.setItem('staticRentalAds', JSON.stringify(appState.staticData));
         } else {
-            appState.staticData = JSON.parse(localStorage.getItem('staticRentalAds'));
+            // Hot-patch old structural storages with default fallback details if emails are missing
+            const parsedData = JSON.parse(localStorage.getItem('staticRentalAds'));
+            if (parsedData.india && !parsedData.india[0].hasOwnProperty('email')) {
+                localStorage.setItem('staticRentalAds', JSON.stringify(appState.staticData));
+            } else {
+                appState.staticData = parsedData;
+            }
         }
 
         function getUserAds() {
@@ -226,24 +195,24 @@
                         
                         <div>
                             <label class="block text-[10px] font-semibold text-gray-400 uppercase tracking-tight">Title</label>
-                            <input type="text" value="${prop.title}" onchange="updatePropertyFieldValue('${prop.id}', 'title', this.value, ${isUserAd})" class="text-sm font-bold text-gray-900 w-full border-b border-transparent focus:border-blue-500 outline-none py-0.5">
+                            <input type="text" value="${prop.title}" onchange="updatePropertyFieldValue('${prop.id}', 'title', this.value, ${isUserAd})" class="text-md font-bold text-gray-900 w-full border-b border-transparent focus:border-blue-500 outline-none py-0.5">
                         </div>
 
                         <div>
                             <label class="block text-[10px] font-semibold text-gray-400 uppercase tracking-tight">Short Description</label>
-                            <textarea onchange="updatePropertyFieldValue('${prop.id}', 'desc', this.value, ${isUserAd})" rows="2" class="text-xs text-gray-600 w-full resize-none border border-transparent focus:border-blue-500 focus:bg-gray-50 rounded p-1 outline-none leading-snug">${prop.desc}</textarea>
+                            <textarea onchange="updatePropertyFieldValue('${prop.id}', 'desc', this.value, ${isUserAd})" rows="2" class="text-sm text-gray-600 w-full resize-none border border-transparent focus:border-blue-500 focus:bg-gray-50 rounded p-1 outline-none leading-snug">${prop.desc}</textarea>
                         </div>
 
                         <!-- Contact Details Segment -->
                         <div class="bg-gray-50 p-2.5 rounded-lg border border-gray-150 space-y-1.5">
                             <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-tight mb-0.5">Contact Information</label>
                             <div class="flex items-center space-x-1 text-xs">
-                                <span class="text-gray-400 font-medium w-12 shrink-0 text-[11px]">Email:</span>
-                                <input type="email" value="${emailValue}" placeholder="No email listed" onchange="updatePropertyFieldValue('${prop.id}', 'email', this.value, ${isUserAd})" class="text-gray-700 text-[11px] bg-transparent w-full border-b border-transparent focus:border-blue-400 focus:bg-white outline-none px-1">
+                                <span class="text-gray-400 font-medium w-12 shrink-0">Email:</span>
+                                <input type="email" value="${emailValue}" placeholder="No email listed" onchange="updatePropertyFieldValue('${prop.id}', 'email', this.value, ${isUserAd})" class="text-gray-700 bg-transparent w-full border-b border-transparent focus:border-blue-400 focus:bg-white outline-none px-1">
                             </div>
                             <div class="flex items-center space-x-1 text-xs">
-                                <span class="text-gray-400 font-medium w-12 shrink-0 text-[11px]">Phone:</span>
-                                <input type="text" value="${phoneValue}" placeholder="No phone listed" onchange="updatePropertyFieldValue('${prop.id}', 'phone', this.value, ${isUserAd})" class="text-gray-700 text-[11px] bg-transparent w-full border-b border-transparent focus:border-blue-400 focus:bg-white outline-none px-1">
+                                <span class="text-gray-400 font-medium w-12 shrink-0">Phone:</span>
+                                <input type="text" value="${phoneValue}" placeholder="No phone listed" onchange="updatePropertyFieldValue('${prop.id}', 'phone', this.value, ${isUserAd})" class="text-gray-700 bg-transparent w-full border-b border-transparent focus:border-blue-400 focus:bg-white outline-none px-1">
                             </div>
                         </div>
                     </div>
@@ -251,7 +220,7 @@
                     <div class="mt-4 pt-3 border-t border-gray-100 flex justify-between items-center">
                         <div class="w-1/2">
                             <label class="block text-[10px] font-semibold text-gray-400 uppercase tracking-tight">Price</label>
-                            <input type="text" value="${prop.price}" onchange="updatePropertyFieldValue('${prop.id}', 'price', this.value, ${isUserAd})" class="text-xs font-extrabold text-green-600 w-full border-b border-transparent focus:border-blue-500 outline-none">
+                            <input type="text" value="${prop.price}" onchange="updatePropertyFieldValue('${prop.id}', 'price', this.value, ${isUserAd})" class="text-sm font-extrabold text-green-600 w-full border-b border-transparent focus:border-blue-500 outline-none">
                         </div>
                         <span class="text-[10px] bg-gray-100 border border-gray-200 text-gray-500 font-medium px-2 py-1 rounded">Auto-Saved</span>
                     </div>
@@ -288,6 +257,7 @@
                             </div>
                             <textarea id="form-desc" rows="1.5" placeholder="Short description..." required class="w-full text-xs p-2 border border-gray-300 rounded bg-white mt-1.5 resize-none focus:ring-1 focus:ring-blue-500 outline-none"></textarea>
                             
+                            <!-- New Contact Inputs in Form -->
                             <div class="grid grid-cols-2 gap-2 mt-1.5">
                                 <input type="email" id="form-email" placeholder="Contact Email" required class="w-full text-xs p-2 border border-gray-300 rounded bg-white focus:ring-1 focus:ring-blue-500 outline-none">
                                 <input type="text" id="form-phone" placeholder="Contact Phone" required class="w-full text-xs p-2 border border-gray-300 rounded bg-white focus:ring-1 focus:ring-blue-500 outline-none">

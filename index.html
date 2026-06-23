@@ -4,32 +4,390 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global Rental Properties</title>
+    <!-- Tailwind CSS for modern responsive styling -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
         .tab-content { display: none; }
         .tab-content.active { display: grid; }
     </style>
 </head>
-<body class="bg-gray-100 font-sans text-gray-800">
+<body class="bg-gray-100 font-sans text-gray-800 h-screen flex flex-col">
 
-    <header class="bg-blue-600 text-white text-center py-6 shadow-md">
+    <!-- Header -->
+    <header class="bg-blue-600 text-white text-center py-5 shadow-md shrink-0">
         <h1 class="text-3xl font-bold">Global Property Rentals</h1>
-        <p class="text-sm mt-1">Explore listings or post your own. Limit: 5 active user ads up to 24 hours.</p>
+        <p class="text-sm mt-1">Directly edit any ad text inline. Limit: 5 active user ads up to 24 hours.</p>
     </header>
 
-    <div class="max-w-6xl mx-auto mt-8 px-4">
-        <div class="flex flex-wrap justify-center space-x-2 border-b border-gray-300 pb-2">
-            <button onclick="switchTab('india')" id="btn-india" class="tab-btn px-6 py-2.5 bg-blue-600 text-white rounded-t-lg font-medium shadow focus:outline-none transition">India</button>
-            <button onclick="switchTab('usa')" id="btn-usa" class="tab-btn px-6 py-2.5 bg-white text-gray-700 hover:bg-gray-200 rounded-t-lg font-medium focus:outline-none transition">USA</button>
-            <button onclick="switchTab('uk')" id="btn-uk" class="tab-btn px-6 py-2.5 bg-white text-gray-700 hover:bg-gray-200 rounded-t-lg font-medium focus:outline-none transition">UK</button>
-            <button onclick="switchTab('canada')" id="btn-canada" class="tab-btn px-6 py-2.5 bg-white text-gray-700 hover:bg-gray-200 rounded-t-lg font-medium focus:outline-none transition">Canada</button>
-            <button onclick="switchTab('uae')" id="btn-uae" class="tab-btn px-6 py-2.5 bg-white text-gray-700 hover:bg-gray-200 rounded-t-lg font-medium focus:outline-none transition">UAE</button>
-        </div>
+    <!-- Main Container -->
+    <div class="flex flex-1 overflow-hidden">
+        
+        <!-- LEFT SIDEBAR: City Filters for India -->
+        <aside id="sidebar" class="w-64 bg-white border-r border-gray-200 p-4 flex flex-col justify-start space-y-2 overflow-y-auto shrink-0">
+            <h2 class="text-xs font-bold text-gray-400 uppercase tracking-wider px-3 mb-2">India City Filters</h2>
+            <button onclick="filterIndiaCity('all')" id="btn-city-all" class="city-btn w-full text-left text-sm px-4 py-2.5 rounded-lg font-semibold bg-gray-900 text-white shadow">All India</button>
+            <button onclick="filterIndiaCity('Bangalore')" id="btn-city-Bangalore" class="city-btn w-full text-left text-sm px-4 py-2.5 rounded-lg font-medium text-gray-600 hover:bg-gray-100 transition">Bangalore</button>
+            <button onclick="filterIndiaCity('Delhi')" id="btn-city-Delhi" class="city-btn w-full text-left text-sm px-4 py-2.5 rounded-lg font-medium text-gray-600 hover:bg-gray-100 transition">Delhi</button>
+            <button onclick="filterIndiaCity('Chennai')" id="btn-city-Chennai" class="city-btn w-full text-left text-sm px-4 py-2.5 rounded-lg font-medium text-gray-600 hover:bg-gray-100 transition">Chennai</button>
+            <button onclick="filterIndiaCity('Hyderabad')" id="btn-city-Hyderabad" class="city-btn w-full text-left text-sm px-4 py-2.5 rounded-lg font-medium text-gray-600 hover:bg-gray-100 transition">Hyderabad</button>
+            <button onclick="filterIndiaCity('Pune')" id="btn-city-Pune" class="city-btn w-full text-left text-sm px-4 py-2.5 rounded-lg font-medium text-gray-600 hover:bg-gray-100 transition">Pune</button>
+        </aside>
 
-        <div id="india-cities-bar" class="flex flex-wrap justify-center gap-2 mt-4">
-            <button onclick="filterIndiaCity('all')" id="btn-city-all" class="city-btn text-xs px-4 py-1.5 rounded-full font-semibold bg-gray-900 text-white shadow">All India</button>
-            <button onclick="filterIndiaCity('Bangalore')" id="btn-city-Bangalore" class="city-btn text-xs px-4 py-1.5 rounded-full font-semibold bg-white text-gray-600 hover:bg-gray-200 transition">Bangalore</button>
-            <button onclick="filterIndiaCity('Delhi')" id="btn-city-Delhi" class="city-btn text-xs px-4 py-1.5 rounded-full font-semibold bg-white text-gray-600 hover:bg-gray-200 transition">Delhi</button>
-            <button onclick="filterIndiaCity('Chennai')" id="btn-city-Chennai" class="city-btn text-xs px-4 py-1.5 rounded-full font-semibold bg-white text-gray-600 hover:bg-gray-200 transition">Chennai</button>
-            <button onclick="filterIndiaCity('Hyderabad')" id="btn-city-Hyderabad" class="city-btn text-xs px-4 py-1.5 rounded-full font-semibold bg-white text-gray-600 hover:bg-gray-200 transition">Hyderabad</button>
-            <button onclick="filterIndiaCity('Pune')" id="btn-city-Pune" class="city-btn text-xs px-4 py-1.5 rounded-full font-semibold bg-white text-gray-600 hover:bg-gray-200 transition">Pune</button>
+        <!-- CENTER WORKSPACE: Country Navigation & Listings Grid -->
+        <main class="flex-1 flex flex-col min-w-0 bg-gray-50 overflow-y-auto p-6">
+            
+            <!-- Main Tabs Container -->
+            <div class="flex space-x-2 border-b border-gray-300 pb-2 mb-6">
+                <button onclick="switchTab('india')" id="btn-india" class="tab-btn px-6 py-2 bg-blue-600 text-white rounded-t-lg font-medium shadow focus:outline-none transition">India</button>
+                <button onclick="switchTab('usa')" id="btn-usa" class="tab-btn px-6 py-2 bg-white text-gray-700 hover:bg-gray-200 rounded-t-lg font-medium focus:outline-none transition">USA</button>
+                <button onclick="switchTab('uk')" id="btn-uk" class="tab-btn px-6 py-2 bg-white text-gray-700 hover:bg-gray-200 rounded-t-lg font-medium focus:outline-none transition">UK</button>
+                <button onclick="switchTab('canada')" id="btn-canada" class="tab-btn px-6 py-2 bg-white text-gray-700 hover:bg-gray-200 rounded-t-lg font-medium focus:outline-none transition">Canada</button>
+                <button onclick="switchTab('uae')" id="btn-uae" class="tab-btn px-6 py-2 bg-white text-gray-700 hover:bg-gray-200 rounded-t-lg font-medium focus:outline-none transition">UAE</button>
+            </div>
+
+            <!-- Properties Grid Content panels -->
+            <div id="india" class="tab-content active grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6 pb-12"></div>
+            <div id="usa" class="tab-content grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6 pb-12"></div>
+            <div id="uk" class="tab-content grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6 pb-12"></div>
+            <div id="canada" class="tab-content grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6 pb-12"></div>
+            <div id="uae" class="tab-content grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6 pb-12"></div>
+
+        </main>
+
+        <!-- RIGHT SIDEBAR: Commercial Advertisements -->
+        <aside class="w-64 bg-gray-50 border-l border-gray-200 p-4 flex flex-col space-y-4 overflow-y-auto shrink-0">
+            <h2 class="text-xs font-bold text-gray-400 uppercase tracking-wider px-1">Sponsored</h2>
+            
+            <!-- Ad Slot 1 -->
+            <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow transition group cursor-pointer">
+                <div class="bg-gradient-to-r from-amber-400 to-orange-500 h-28 flex items-center justify-center text-white font-black text-xl tracking-wider">
+                    HOME LOANS
+                </div>
+                <div class="p-3">
+                    <span class="text-[9px] bg-amber-100 text-amber-800 font-bold px-1.5 py-0.5 rounded">Ad</span>
+                    <h3 class="text-xs font-bold mt-1 text-gray-900 group-hover:text-blue-600 transition">Instant Approval Loans</h3>
+                    <p class="text-[11px] text-gray-500 mt-0.5">Get rental deposits & home buyers support up to 80% funding. Low interest rates!</p>
+                </div>
+            </div>
+
+            <!-- Ad Slot 2 -->
+            <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow transition group cursor-pointer">
+                <div class="bg-gradient-to-r from-purple-500 to-indigo-600 h-28 flex items-center justify-center text-white font-black text-xl tracking-wider">
+                    PACKERS
+                </div>
+                <div class="p-3">
+                    <span class="text-[9px] bg-amber-100 text-amber-800 font-bold px-1.5 py-0.5 rounded">Ad</span>
+                    <h3 class="text-xs font-bold mt-1 text-gray-900 group-hover:text-blue-600 transition">Shift Smoothly</h3>
+                    <p class="text-[11px] text-gray-500 mt-0.5">Professional packing and moving services. Flat 15% off on your first city relocation.</p>
+                </div>
+            </div>
+
+            <!-- Ad Slot 3 -->
+            <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 text-center flex flex-col justify-center items-center">
+                <p class="text-xs font-bold text-blue-900">Want your property featured here?</p>
+                <p class="text-[11px] text-blue-600 mt-1">Boost visibility by 10x with our premium display packages.</p>
+                <a href="mailto:advertise@globalrentals.com" class="mt-3 inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold text-[11px] px-4 py-1.5 rounded-lg shadow transition">Advertise Here</a>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- JavaScript Core Logic -->
+    <script>
+        // Initializing app dataset safely inside master session runtime memory wrapper
+        const appState = {
+            activeCountry: 'india',
+            activeIndiaCity: 'all',
+            staticData: JSON.parse(localStorage.getItem('staticRentalAds')) || {
+                india: [
+                    { id: "s-in-1", title: "Cozy Studio Flat", loc: "Bangalore", price: "₹25,000/mo", desc: "Fully furnished flat near Tech Park. Ideal for IT professionals.", email: "owner1@rentals.in", phone: "+91 98765 43210" },
+                    { id: "s-in-2", title: "Modern 1BHK Smart Home", loc: "Pune", price: "₹20,000/mo", desc: "Equipped with automated lighting, fast WiFi, and modular kitchen.", email: "pune.homes@rentals.in", phone: "+91 98765 43211" },
+                    { id: "s-in-3", title: "Spacious Penthouse", loc: "Delhi", price: "₹1,20,000/mo", desc: "High-end rooftop property with a private terrace garden.", email: "delhi.luxury@rentals.in", phone: "+91 98765 43212" },
+                    { id: "s-in-4", title: "2BHK Gated Community", loc: "Hyderabad", price: "₹35,000/mo", desc: "Family-friendly society with 24/7 security and power backup.", email: "hyd.rent@rentals.in", phone: "+91 98765 43213" },
+                    { id: "s-in-5", title: "Luxury 3BHK Apartment", loc: "Chennai", price: "₹55,000/mo", desc: "Premium coastal views flat with complete amenities and gym access.", email: "chennai.agent@rentals.in", phone: "+91 98765 43214" },
+                    { id: "s-in-6", title: "Elegantly Styled Studio", loc: "Bangalore", price: "₹30,000/mo", desc: "Walking distance to cafe streets, completely managed housekeeping.", email: "blr.studio@rentals.in", phone: "+91 98765 43215" },
+                    { id: "s-in-7", title: "Serviced Studio Suite", loc: "Delhi", price: "₹40,000/mo", desc: "Includes housekeeping, laundry, and all utility bills pre-integrated.", email: "delhi.stay@rentals.in", phone: "+91 98765 43216" },
+                    { id: "s-in-8", title: "Premium Duplex Villa", loc: "Pune", price: "₹65,000/mo", desc: "Large rooms, covered parking, and beautiful private lawn area.", email: "pune.villa@rentals.in", phone: "+91 98765 43217" },
+                    { id: "s-in-9", title: "Affordable 2BHK Home", loc: "Chennai", price: "₹22,000/mo", desc: "Located close to metro station. Quite and safe neighborhood.", email: "chennai.budget@rentals.in", phone: "+91 98765 43218" },
+                    { id: "s-in-10", title: "Luxury Sky Villa", loc: "Hyderabad", price: "₹90,000/mo", desc: "High floor panoramic view duplex apartment with automated systems.", email: "hyd.sky@rentals.in", phone: "+91 98765 43219" }
+                ],
+                usa: [
+                    { id: "s-us-1", title: "Manhattan Studio Loft", loc: "New York, NY", price: "$3,200/mo", desc: "Chic brick-wall design located in the heart of downtown.", email: "nyc@usrentals.com", phone: "+1 (555) 019-2831" },
+                    { id: "s-us-2", title: "Sunny 2-Bed Beach Condo", loc: "Miami, FL", price: "$2,800/mo", desc: "Ocean view balcony with community pool access included.", email: "miami@usrentals.com", phone: "+1 (555) 019-2832" },
+                    { id: "s-us-3", title: "Modern Suburban Home", loc: "Austin, TX", price: "$2,100/mo", desc: "Spacious backyard, 3 bedrooms, perfect for families.", email: "austin@usrentals.com", phone: "+1 (555) 019-2833" },
+                    { id: "s-us-4", title: "Downtown Highrise Apt", loc: "Chicago, IL", price: "$2,400/mo", desc: "Floor-to-ceiling windows with panoramic city views.", email: "chicago@usrentals.com", phone: "+1 (555) 019-2834" },
+                    { id: "s-us-5", title: "Charming Craftsman House", loc: "Seattle, WA", price: "$2,900/mo", desc: "Quiet neighborhood with a cozy fireplace and wooden floors.", email: "seattle@usrentals.com", phone: "+1 (555) 019-2835" },
+                    { id: "s-us-6", title: "Luxury Hollywood Flat", loc: "Los Angeles, CA", price: "$3,500/mo", desc: "Gated entry, rooftop patio, and private underground parking.", email: "la@usrentals.com", phone: "+1 (555) 019-2836" },
+                    { id: "s-us-7", title: "Cozy Mountain Cabin", loc: "Denver, CO", price: "$1,950/mo", desc: "Rustic retreat close to popular skiing slopes.", email: "denver@usrentals.com", phone: "+1 (555) 019-2837" },
+                    { id: "s-us-8", title: "Renovated Townhouse", loc: "Boston, MA", price: "$3,100/mo", desc: "Historic charm blended smoothly with state-of-the-art appliances.", email: "boston@usrentals.com", phone: "+1 (555) 019-2838" },
+                    { id: "s-us-9", title: "Sleek Tech-District Flat", loc: "San Francisco, CA", price: "$4,000/mo", desc: "Walking distance to major corporate campuses.", email: "sf@usrentals.com", phone: "+1 (555) 019-2839" },
+                    { id: "s-us-10", title: "Quiet Countryside Cottage", loc: "Nashville, TN", price: "$1,600/mo", desc: "Serene surroundings with ample outdoor porch space.", email: "nashville@usrentals.com", phone: "+1 (555) 019-2840" }
+                ],
+                uk: [
+                    { id: "s-uk-1", title: "Central London Flat", loc: "London", price: "£2,200/mo", desc: "Compact modern studio right next to Tube station.", email: "london@ukrentals.co.uk", phone: "+44 20 7946 0958" },
+                    { id: "s-uk-2", title: "Georgian Townhouse Apt", loc: "Bath", price: "£1,400/mo", desc: "Beautiful high ceilings, historic architecture layout.", email: "bath@ukrentals.co.uk", phone: "+44 20 7946 0959" },
+                    { id: "s-uk-3", title: "Modern Waterfront Flat", loc: "Liverpool", price: "£950/mo", desc: "Overlooking the docks, stylish interior finishes.", email: "liverpool@ukrentals.co.uk", phone: "+44 20 7946 0960" },
+                    { id: "s-uk-4", title: "Quaint Stone Cottage", loc: "Cotswolds", price: "£1,600/mo", desc: "Traditional English village vibe with a lovely open garden.", email: "cotswolds@ukrentals.co.uk", phone: "+44 20 7946 0961" },
+                    { id: "s-uk-5", title: "City Centre Studio", loc: "Manchester", price: "£1,100/mo", desc: "Perfect location for young professionals and students.", email: "manchester@ukrentals.co.uk", phone: "+44 20 7946 0962" },
+                    { id: "s-uk-6", title: "Spacious 3-Bed House", loc: "Birmingham", price: "£1,350/mo", desc: "Double bedrooms, garage space, and broad backyard.", email: "bham@ukrentals.co.uk", phone: "+44 20 7946 0963" },
+                    { id: "s-uk-7", title: "Victorian Era Conversion", loc: "Edinburgh", price: "£1,700/mo", desc: "Stunning castle views with upgraded bathroom fittings.", email: "edinburgh@ukrentals.co.uk", phone: "+44 20 7946 0964" },
+                    { id: "s-uk-8", title: "Bright Contemporary Studio", loc: "Bristol", price: "£1,050/mo", desc: "Eco-friendly construction featuring low energy bills.", email: "bristol@ukrentals.co.uk", phone: "+44 20 7946 0965" },
+                    { id: "s-uk-9", title: "Semi-Detached Suburb Home", loc: "Leeds", price: "£1,200/mo", desc: "Close to excellent public schools and local parks.", email: "leeds@ukrentals.co.uk", phone: "+44 20 7946 0966" },
+                    { id: "s-uk-10", title: "Luxury Riverside Apartment", loc: "Glasgow", price: "£1,500/mo", desc: "Balcony overlooking the river, building concierge service.", email: "glasgow@ukrentals.co.uk", phone: "+44 20 7946 0967" }
+                ],
+                canada: [
+                    { id: "s-ca-1", title: "High-Rise Condo Downtown", loc: "Toronto, ON", price: "$2,500/mo", desc: "CN Tower views, modern integrated European appliances.", email: "toronto@canadarent.ca", phone: "+1 (613) 555-0142" },
+                    { id: "s-ca-2", title: "Scenic Mountain View Apt", loc: "Vancouver, BC", price: "$2,800/mo", desc: "Large windows, close to transit lines and nature trails.", email: "vancouver@canadarent.ca", phone: "+1 (613) 555-0143" },
+                    { id: "s-ca-3", title: "Cozy Basement Studio", loc: "Montreal, QC", price: "$1,200/mo", desc: "Heating included in rent, authentic stone walls.", email: "montreal@canadarent.ca", phone: "+1 (613) 555-0144" },
+                    { id: "s-ca-4", title: "Spacious Family Bungalow", loc: "Calgary, AB", price: "$2,000/mo", desc: "Basement recreation room, large double-car garage.", email: "calgary@canadarent.ca", phone: "+1 (613) 555-0145" },
+                    { id: "s-ca-5", title: "Modern 2-Bedroom Condo", loc: "Ottawa, ON", price: "$1,900/mo", desc: "Steps from Parliament Hill, quiet secure building.", email: "ottawa@canadarent.ca", phone: "+1 (613) 555-0146" },
+                    { id: "s-ca-6", title: "Charming Heritage Suite", loc: "Victoria, BC", price: "$1,750/mo", desc: "Hardwood flooring, pet-friendly building policies.", email: "victoria@canadarent.ca", phone: "+1 (613) 555-0147" },
+                    { id: "s-ca-7", title: "Affordable Suburban Home", loc: "Edmonton, AB", price: "$1,500/mo", desc: "Fenced yard, family-friendly cul-de-sac location.", email: "edmonton@canadarent.ca", phone: "+1 (613) 555-0148" },
+                    { id: "s-ca-8", title: "Trendy Flat in Arts District", loc: "Winnipeg, MB", price: "$1,300/mo", desc: "Industrial loft conversion style with exposed ducts.", email: "winnipeg@canadarent.ca", phone: "+1 (613) 555-0149" },
+                    { id: "s-ca-9", title: "Bright 1-Bed Apartment", loc: "Halifax, NS", price: "$1,450/mo", desc: "Ocean breezes, completely updated kitchen counters.", email: "halifax@canadarent.ca", phone: "+1 (613) 555-0150" },
+                    { id: "s-ca-10", title: "Quiet Lakefront Cabin", loc: "Kelowna, BC", price: "$2,200/mo", desc: "Stunning private deck access directly onto the lake.", email: "kelowna@canadarent.ca", phone: "+1 (613) 555-0151" }
+                ],
+                uae: [
+                    { id: "s-ae-1", title: "Marina View Sky Apartment", loc: "Dubai Marina", price: "AED 12,000/mo", desc: "Infinity pool access, premium modern interior design.", email: "marina@uaehomes.ae", phone: "+971 4 321 4321" },
+                    { id: "s-ae-2", title: "Luxury Corniche Flat", loc: "Abu Dhabi", price: "AED 10,000/mo", desc: "Spacious layout right along the public beach front.", email: "auh@uaehomes.ae", phone: "+971 2 654 3210" },
+                    { id: "s-ae-3", title: "Affordable Family Studio", loc: "Sharjah", price: "AED 3,000/mo", desc: "Clean building setup near central family city parks.", email: "shj@uaehomes.ae", phone: "+971 6 765 4321" },
+                    { id: "s-ae-4", title: "Downtown Burj View Suite", loc: "Downtown Dubai", price: "AED 18,000/mo", desc: "Walking distance to the Dubai Mall and fountains.", email: "downtown@uaehomes.ae", phone: "+971 4 321 4322" },
+                    { id: "s-ae-5", title: "Modern Waterfront Studio", loc: "Ras Al Khaimah", price: "AED 4,000/mo", desc: "Quiet beach community lifestyle with gym privileges.", email: "rak@uaehomes.ae", phone: "+971 7 222 3333" },
+                    { id: "s-ae-6", title: "Spacious 3-Bed Villa", loc: "Mirdif, Dubai", price: "AED 15,000/mo", desc: "Private garden patch, great community for kids.", email: "mirdif@uaehomes.ae", phone: "+971 4 321 4323" },
+                    { id: "s-ae-7", title: "Sleek High-Floor Studio", loc: "JLT, Dubai", price: "AED 7,500/mo", desc: "Right next to Metro station with cluster dining options.", email: "jlt@uaehomes.ae", phone: "+971 4 321 4324" },
+                    { id: "s-ae-8", title: "Premium Al Reem Island Apt", loc: "Abu Dhabi", price: "AED 9,000/mo", desc: "Floor-to-ceiling glass layout with premium sea vistas.", email: "reem@uaehomes.ae", phone: "+971 2 654 3211" },
+                    { id: "s-ae-9", title: "Cozy Courtyard Flat", loc: "Ajman", price: "AED 2,500/mo", desc: "Extremely cost-effective, free maintenance support.", email: "ajman@uaehomes.ae", phone: "+971 6 765 4322" },
+                    { id: "s-ae-10", title: "Luxury Golf Estate Villa", loc: "Arabian Ranches", price: "AED 25,000/mo", desc: "Private swimming pool overlooking world-class golf course.", email: "ranches@uaehomes.ae", phone: "+971 4 321 4325" }
+                ]
+            }
+        };
+
+        // Cache base defaults to LocalStorage if not already set up
+        if(!localStorage.getItem('staticRentalAds')) {
+            localStorage.setItem('staticRentalAds', JSON.stringify(appState.staticData));
+        } else {
+            appState.staticData = JSON.parse(localStorage.getItem('staticRentalAds'));
+        }
+
+        function getUserAds() {
+            let ads = JSON.parse(localStorage.getItem('userRentalAds')) || [];
+            const oneDayInMs = 24 * 60 * 60 * 1000;
+            const now = Date.now();
+
+            const activeAds = ads.filter(ad => (now - ad.timestamp) < oneDayInMs);
+            if(activeAds.length !== ads.length) {
+                localStorage.setItem('userRentalAds', JSON.stringify(activeAds));
+            }
+            return activeAds;
+        }
+
+        function renderProperties() {
+            const userAds = getUserAds();
+
+            for (const country in appState.staticData) {
+                const container = document.getElementById(country);
+                container.innerHTML = ''; 
+
+                let currentStaticList = appState.staticData[country];
+                let currentDynamicList = userAds.filter(ad => ad.country === country);
+
+                // Apply dynamic nested filtering rule if dealing with India city tags
+                if (country === 'india' && appState.activeIndiaCity !== 'all') {
+                    currentStaticList = currentStaticList.filter(prop => prop.loc.toLowerCase() === appState.activeIndiaCity.toLowerCase());
+                    currentDynamicList = currentDynamicList.filter(prop => prop.loc.toLowerCase() === appState.activeIndiaCity.toLowerCase());
+                }
+
+                // 1. Render Static List
+                currentStaticList.forEach(prop => {
+                    container.innerHTML += createCardHTML(prop, false);
+                });
+
+                // 2. Render User Ads
+                currentDynamicList.forEach(prop => {
+                    container.innerHTML += createCardHTML(prop, true);
+                });
+
+                // 3. Append Interactive Input Submission Tile Form
+                container.innerHTML += createFormTileHTML(userAds.length);
+            }
+        }
+
+        function createCardHTML(prop, isUserAd) {
+            const emailValue = prop.email || '';
+            const phoneValue = prop.phone || '';
+
+            return `
+                <div class="bg-white rounded-xl shadow border ${isUserAd ? 'border-orange-300 bg-orange-50/10' : 'border-gray-200'} flex flex-col justify-between p-5">
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <input type="text" value="${prop.loc}" onchange="updatePropertyFieldValue('${prop.id}', 'loc', this.value, ${isUserAd})" class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded uppercase tracking-wider border border-transparent focus:border-blue-400 focus:bg-white outline-none w-2/3">
+                            ${isUserAd ? '<span class="text-[10px] bg-orange-500 text-white font-bold px-1.5 py-0.5 rounded whitespace-nowrap animate-pulse">USER AD</span>' : ''}
+                        </div>
+                        
+                        <div>
+                            <label class="block text-[10px] font-semibold text-gray-400 uppercase tracking-tight">Title</label>
+                            <input type="text" value="${prop.title}" onchange="updatePropertyFieldValue('${prop.id}', 'title', this.value, ${isUserAd})" class="text-sm font-bold text-gray-900 w-full border-b border-transparent focus:border-blue-500 outline-none py-0.5">
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-semibold text-gray-400 uppercase tracking-tight">Short Description</label>
+                            <textarea onchange="updatePropertyFieldValue('${prop.id}', 'desc', this.value, ${isUserAd})" rows="2" class="text-xs text-gray-600 w-full resize-none border border-transparent focus:border-blue-500 focus:bg-gray-50 rounded p-1 outline-none leading-snug">${prop.desc}</textarea>
+                        </div>
+
+                        <!-- Contact Details Segment -->
+                        <div class="bg-gray-50 p-2.5 rounded-lg border border-gray-150 space-y-1.5">
+                            <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-tight mb-0.5">Contact Information</label>
+                            <div class="flex items-center space-x-1 text-xs">
+                                <span class="text-gray-400 font-medium w-12 shrink-0 text-[11px]">Email:</span>
+                                <input type="email" value="${emailValue}" placeholder="No email listed" onchange="updatePropertyFieldValue('${prop.id}', 'email', this.value, ${isUserAd})" class="text-gray-700 text-[11px] bg-transparent w-full border-b border-transparent focus:border-blue-400 focus:bg-white outline-none px-1">
+                            </div>
+                            <div class="flex items-center space-x-1 text-xs">
+                                <span class="text-gray-400 font-medium w-12 shrink-0 text-[11px]">Phone:</span>
+                                <input type="text" value="${phoneValue}" placeholder="No phone listed" onchange="updatePropertyFieldValue('${prop.id}', 'phone', this.value, ${isUserAd})" class="text-gray-700 text-[11px] bg-transparent w-full border-b border-transparent focus:border-blue-400 focus:bg-white outline-none px-1">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-gray-100 flex justify-between items-center">
+                        <div class="w-1/2">
+                            <label class="block text-[10px] font-semibold text-gray-400 uppercase tracking-tight">Price</label>
+                            <input type="text" value="${prop.price}" onchange="updatePropertyFieldValue('${prop.id}', 'price', this.value, ${isUserAd})" class="text-xs font-extrabold text-green-600 w-full border-b border-transparent focus:border-blue-500 outline-none">
+                        </div>
+                        <span class="text-[10px] bg-gray-100 border border-gray-200 text-gray-500 font-medium px-2 py-1 rounded">Auto-Saved</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createFormTileHTML(currentTotalCount) {
+            if (currentTotalCount >= 5) {
+                return `
+                    <div class="bg-gray-100 border-2 border-dashed border-gray-300 rounded-xl p-6 flex flex-col justify-center items-center text-center">
+                        <svg class="w-10 h-10 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                        <h3 class="text-md font-bold text-gray-700">Limit Reached (5/5)</h3>
+                        <p class="text-xs text-gray-500 mt-1 px-4">Global limit full. Wait for old entries to hit the 24-hour limit and expire to post new ads.</p>
+                    </div>
+                `;
+            }
+
+            const locPlaceholder = (appState.activeCountry === 'india' && appState.activeIndiaCity !== 'all') ? appState.activeIndiaCity : "City, State";
+            const locValueAttribute = (appState.activeCountry === 'india' && appState.activeIndiaCity !== 'all') ? `value="${appState.activeIndiaCity}" readonly class="w-full text-xs p-2 border border-gray-200 bg-gray-100 rounded text-gray-500 font-bold outline-none"` : `class="w-full text-xs p-2 border border-gray-300 rounded bg-white focus:ring-1 focus:ring-blue-500 outline-none"`;
+
+            return `
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-dashed border-blue-300 rounded-xl p-5 flex flex-col justify-between">
+                    <form onsubmit="handleFormSubmit(event)" class="space-y-2 h-full flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-sm font-bold text-blue-900 flex items-center mb-1.5">
+                                <svg class="w-4 h-4 mr-1 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                                Create New Listing
+                            </h3>
+                            <input type="text" id="form-title" placeholder="Property Title (e.g. 2BHK Flat)" required class="w-full text-xs p-2 border border-gray-300 rounded bg-white focus:ring-1 focus:ring-blue-500 outline-none mb-1.5">
+                            <div class="grid grid-cols-2 gap-2">
+                                <input type="text" id="form-loc" placeholder="${locPlaceholder}" ${locValueAttribute} required>
+                                <input type="text" id="form-price" placeholder="Price/mo" required class="w-full text-xs p-2 border border-gray-300 rounded bg-white focus:ring-1 focus:ring-blue-500 outline-none">
+                            </div>
+                            <textarea id="form-desc" rows="1.5" placeholder="Short description..." required class="w-full text-xs p-2 border border-gray-300 rounded bg-white mt-1.5 resize-none focus:ring-1 focus:ring-blue-500 outline-none"></textarea>
+                            
+                            <div class="grid grid-cols-2 gap-2 mt-1.5">
+                                <input type="email" id="form-email" placeholder="Contact Email" required class="w-full text-xs p-2 border border-gray-300 rounded bg-white focus:ring-1 focus:ring-blue-500 outline-none">
+                                <input type="text" id="form-phone" placeholder="Contact Phone" required class="w-full text-xs p-2 border border-gray-300 rounded bg-white focus:ring-1 focus:ring-blue-500 outline-none">
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded text-xs transition shadow-sm mt-2">
+                            Publish Live (${currentTotalCount}/5)
+                        </button>
+                    </form>
+                </div>
+            `;
+        }
+
+        // Handle Live Inline Content Modification Saves
+        function updatePropertyFieldValue(id, key, value, isUserAd) {
+            if (isUserAd) {
+                let userAds = getUserAds();
+                let adIndex = userAds.findIndex(ad => ad.id === id);
+                if (adIndex !== -1) {
+                    userAds[adIndex][key] = value;
+                    localStorage.setItem('userRentalAds', JSON.stringify(userAds));
+                }
+            } else {
+                let targetCountry = appState.activeCountry;
+                let adIndex = appState.staticData[targetCountry].findIndex(ad => ad.id === id);
+                if (adIndex !== -1) {
+                    appState.staticData[targetCountry][adIndex][key] = value;
+                    localStorage.setItem('staticRentalAds', JSON.stringify(appState.staticData));
+                }
+            }
+        }
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const userAds = getUserAds();
+
+            if (userAds.length >= 5) {
+                alert("Creation denied. System has reached maximum allowances.");
+                return;
+            }
+
+            const newAd = {
+                id: 'ad-' + Date.now(),
+                country: appState.activeCountry,
+                title: document.getElementById('form-title').value.trim(),
+                loc: document.getElementById('form-loc').value.trim(),
+                price: document.getElementById('form-price').value.trim(),
+                desc: document.getElementById('form-desc').value.trim(),
+                email: document.getElementById('form-email').value.trim(),
+                phone: document.getElementById('form-phone').value.trim(),
+                timestamp: Date.now()
+            };
+
+            userAds.push(newAd);
+            localStorage.setItem('userRentalAds', JSON.stringify(userAds));
+            renderProperties();
+        }
+
+        function filterIndiaCity(city) {
+            appState.activeIndiaCity = city;
+            
+            document.querySelectorAll('.city-btn').forEach(btn => {
+                btn.classList.remove('bg-gray-900', 'text-white', 'shadow', 'font-semibold');
+                btn.classList.add('bg-white', 'text-gray-600', 'hover:bg-gray-100', 'font-medium');
+            });
+
+            const activeBtn = document.getElementById(`btn-city-${city}`);
+            activeBtn.classList.remove('bg-white', 'text-gray-600', 'hover:bg-gray-100', 'font-medium');
+            activeBtn.classList.add('bg-gray-900', 'text-white', 'shadow', 'font-semibold');
+
+            renderProperties();
+        }
+
+        function switchTab(countryId) {
+            appState.activeCountry = countryId;
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'text-white', 'shadow');
+                btn.classList.add('bg-white', 'text-gray-700', 'hover:bg-gray-200');
+            });
+
+            document.getElementById(countryId).classList.add('active');
+            const activeBtn = document.getElementById(`btn-${countryId}`);
+            activeBtn.classList.remove('bg-white', 'text-gray-700', 'hover:bg-gray-200');
+            activeBtn.classList.add('bg-blue-600', 'text-white', 'shadow');
+            
+            // Show/Hide Left Sidebar conditionally based on country context choice
+            const sidebar = document.getElementById('sidebar');
+            if (countryId === 'india') {
+                sidebar.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('hidden');
+            }
+
+            renderProperties();
+        }
+
+        // Run on page launch initialization
+        renderProperties();
+        setInterval(renderProperties, 30000);
+    </script>
+</body>
+</html>

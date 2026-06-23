@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global Rental Properties</title>
-    <!-- Tailwind CSS for modern responsive styling -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
         .tab-content { display: none; }
@@ -13,13 +12,11 @@
 </head>
 <body class="bg-gray-100 font-sans text-gray-800">
 
-    <!-- Header -->
     <header class="bg-blue-600 text-white text-center py-6 shadow-md">
         <h1 class="text-3xl font-bold">Global Property Rentals</h1>
         <p class="text-sm mt-1">Explore listings or post your own. Limit: 5 active user ads up to 24 hours.</p>
     </header>
 
-    <!-- Tabs Container -->
     <div class="max-w-6xl mx-auto mt-8 px-4">
         <div class="flex flex-wrap justify-center space-x-2 border-b border-gray-300 pb-2">
             <button onclick="switchTab('india')" id="btn-india" class="tab-btn px-6 py-2.5 bg-blue-600 text-white rounded-t-lg font-medium shadow focus:outline-none transition">India</button>
@@ -29,241 +26,10 @@
             <button onclick="switchTab('uae')" id="btn-uae" class="tab-btn px-6 py-2.5 bg-white text-gray-700 hover:bg-gray-200 rounded-t-lg font-medium focus:outline-none transition">UAE</button>
         </div>
 
-        <!-- Properties Grid Containers -->
-        <div class="mt-6">
-            
-            <!-- INDIA TAB -->
-            <div id="india" class="tab-content active grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-
-            <!-- USA TAB -->
-            <div id="usa" class="tab-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-
-            <!-- UK TAB -->
-            <div id="uk" class="tab-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-
-            <!-- CANADA TAB -->
-            <div id="canada" class="tab-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-
-            <!-- UAE TAB -->
-            <div id="uae" class="tab-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-gray-400 text-center py-6 mt-12">
-        <p>&copy; 2026 Global Rentals Marketplace. All rights reserved.</p>
-    </footer>
-
-    <!-- JavaScript Handling Core App Logic -->
-    <script>
-        // Default Mock Properties Data (10 per country)
-        const staticData = {
-            india: [
-                { title: "Luxury 3BHK Apartment", loc: "Mumbai, MH", price: "₹85,000/mo", desc: "Sea-facing modern flat with premium amenities and gym access." },
-                { title: "Cozy Studio Flat", loc: "Bangalore, KA", price: "₹25,000/mo", desc: "Fully furnished flat near Tech Park. Ideal for bachelors." },
-                { title: "Spacious Penthouse", loc: "Delhi, NCR", price: "₹1,20,000/mo", desc: "High-end rooftop property with a private terrace garden." },
-                { title: "2BHK Gated Community", loc: "Hyderabad, TS", price: "₹35,000/mo", desc: "Family-friendly society with 24/7 security and power backup." },
-                { title: "Traditional Villa", loc: "Kochi, KL", price: "₹45,000/mo", desc: "Beautiful heritage style home featuring a private courtyard." },
-                { title: "Modern 1BHK Smart Home", loc: "Pune, MH", price: "₹20,000/mo", desc: "Equipped with automated lighting, fast WiFi, and modular kitchen." },
-                { title: "Beachside Serviced Rowhouse", loc: "Goa", price: "₹60,000/mo", desc: "Steps away from the beach. Perfect holiday rental setup." },
-                { title: "Affordable 2BHK Home", loc: "Kolkata, WB", price: "₹18,000/mo", desc: "Located close to metro station. Safe neighborhood." },
-                { title: "Premium Duplex Villa", loc: "Ahmedabad, GJ", price: "₹55,000/mo", desc: "Large rooms, covered parking, and private lawn area." },
-                { title: "Serviced Studio Suite", loc: "Gurugram, HR", price: "₹40,000/mo", desc: "Includes housekeeping, laundry, and all utility bills." }
-            ],
-            usa: [
-                { title: "Manhattan Studio Loft", loc: "New York, NY", price: "$3,200/mo", desc: "Chic brick-wall design located in the heart of downtown." },
-                { title: "Sunny 2-Bed Beach Condo", loc: "Miami, FL", price: "$2,800/mo", desc: "Ocean view balcony with community pool access included." },
-                { title: "Modern Suburban Home", loc: "Austin, TX", price: "$2,100/mo", desc: "Spacious backyard, 3 bedrooms, perfect for families." },
-                { title: "Downtown Highrise Apt", loc: "Chicago, IL", price: "$2,400/mo", desc: "Floor-to-ceiling windows with panoramic city views." },
-                { title: "Charming Craftsman House", loc: "Seattle, WA", price: "$2,900/mo", desc: "Quiet neighborhood with a cozy fireplace and wooden floors." },
-                { title: "Luxury Hollywood Flat", loc: "Los Angeles, CA", price: "$3,500/mo", desc: "Gated entry, rooftop patio, and private underground parking." },
-                { title: "Cozy Mountain Cabin", loc: "Denver, CO", price: "$1,950/mo", desc: "Rustic retreat close to popular skiing slopes." },
-                { title: "Renovated Townhouse", loc: "Boston, MA", price: "$3,100/mo", desc: "Historic charm blended smoothly with state-of-the-art appliances." },
-                { title: "Sleek Tech-District Flat", loc: "San Francisco, CA", price: "$4,000/mo", desc: "Walking distance to major corporate campuses." },
-                { title: "Quiet Countryside Cottage", loc: "Nashville, TN", price: "$1,600/mo", desc: "Serene surroundings with ample outdoor porch space." }
-            ],
-            uk: [
-                { title: "Central London Flat", loc: "London", price: "£2,200/mo", desc: "Compact modern studio right next to Tube station." },
-                { title: "Georgian Townhouse Apt", loc: "Bath", price: "£1,400/mo", desc: "Beautiful high ceilings, historic architecture layout." },
-                { title: "Modern Waterfront Flat", loc: "Liverpool", price: "£950/mo", desc: "Overlooking the docks, stylish interior finishes." },
-                { title: "Quaint Stone Cottage", loc: "Cotswolds", price: "£1,600/mo", desc: "Traditional English village vibe with a lovely open garden." },
-                { title: "City Centre Studio", loc: "Manchester", price: "£1,100/mo", desc: "Perfect location for young professionals and students." },
-                { title: "Spacious 3-Bed House", loc: "Birmingham", price: "£1,350/mo", desc: "Double bedrooms, garage space, and broad backyard." },
-                { title: "Victorian Era Conversion", loc: "Edinburgh", price: "£1,700/mo", desc: "Stunning castle views with upgraded bathroom fittings." },
-                { title: "Bright Contemporary Studio", loc: "Bristol", price: "£1,050/mo", desc: "Eco-friendly construction featuring low energy bills." },
-                { title: "Semi-Detached Suburb Home", loc: "Leeds", price: "£1,200/mo", desc: "Close to excellent public schools and local parks." },
-                { title: "Luxury Riverside Apartment", loc: "Glasgow", price: "£1,500/mo", desc: "Balcony overlooking the river, building concierge service." }
-            ],
-            canada: [
-                { title: "High-Rise Condo Downtown", loc: "Toronto, ON", price: "$2,500/mo", desc: "CN Tower views, modern integrated European appliances." },
-                { title: "Scenic Mountain View Apt", loc: "Vancouver, BC", price: "$2,800/mo", desc: "Large windows, close to transit lines and nature trails." },
-                { title: "Cozy Basement Studio", loc: "Montreal, QC", price: "$1,200/mo", desc: "Heating included in rent, authentic stone walls." },
-                { title: "Spacious Family Bungalow", loc: "Calgary, AB", price: "$2,000/mo", desc: "Basement recreation room, large double-car garage." },
-                { title: "Modern 2-Bedroom Condo", loc: "Ottawa, ON", price: "$1,900/mo", desc: "Steps from Parliament Hill, quiet secure building." },
-                { title: "Charming Heritage Suite", loc: "Victoria, BC", price: "$1,750/mo", desc: "Hardwood flooring, pet-friendly building policies." },
-                { title: "Affordable Suburban Home", loc: "Edmonton, AB", price: "$1,500/mo", desc: "Fenced yard, family-friendly cul-de-sac location." },
-                { title: "Trendy Flat in Arts District", loc: "Winnipeg, MB", price: "$1,300/mo", desc: "Industrial loft conversion style with exposed ducts." },
-                { title: "Bright 1-Bed Apartment", loc: "Halifax, NS", price: "$1,450/mo", desc: "Ocean breezes, completely updated kitchen counters." },
-                { title: "Quiet Lakefront Cabin", loc: "Kelowna, BC", price: "$2,200/mo", desc: "Stunning private deck access directly onto the lake." }
-            ],
-            uae: [
-                { title: "Marina View Sky Apartment", loc: "Dubai Marina", price: "AED 12,000/mo", desc: "Infinity pool access, premium modern interior design." },
-                { title: "Luxury Corniche Flat", loc: "Abu Dhabi", price: "AED 10,000/mo", desc: "Spacious layout right along the public beach front." },
-                { title: "Affordable Family Studio", loc: "Sharjah", price: "AED 3,000/mo", desc: "Clean building setup near central family city parks." },
-                { title: "Downtown Burj View Suite", loc: "Downtown Dubai", price: "AED 18,000/mo", desc: "Walking distance to the Dubai Mall and fountains." },
-                { title: "Modern Waterfront Studio", loc: "Ras Al Khaimah", price: "AED 4,000/mo", desc: "Quiet beach community lifestyle with gym privileges." },
-                { title: "Spacious 3-Bed Villa", loc: "Mirdif, Dubai", price: "AED 15,000/mo", desc: "Private garden patch, great community for kids." },
-                { title: "Sleek High-Floor Studio", loc: "JLT, Dubai", price: "AED 7,500/mo", desc: "Right next to Metro station with cluster dining options." },
-                { title: "Premium Al Reem Island Apt", loc: "Abu Dhabi", price: "AED 9,000/mo", desc: "Floor-to-ceiling glass layout with premium sea vistas." },
-                { title: "Cozy Courtyard Flat", loc: "Ajman", price: "AED 2,500/mo", desc: "Extremely cost-effective, free maintenance support." },
-                { title: "Luxury Golf Estate Villa", loc: "Arabian Ranches", price: "AED 25,000/mo", desc: "Private swimming pool overlooking world-class golf course." }
-            ]
-        };
-
-        let activeCountry = 'india';
-
-        // Fetch user custom ads from storage or setup blank array
-        function getUserAds() {
-            let ads = JSON.parse(localStorage.getItem('userRentalAds')) || [];
-            const oneDayInMs = 24 * 60 * 60 * 1000;
-            const now = Date.now();
-
-            // Filter out any custom ad older than 24 hours
-            const activeAds = ads.filter(ad => (now - ad.timestamp) < oneDayInMs);
-            
-            if(activeAds.length !== ads.length) {
-                localStorage.setItem('userRentalAds', JSON.stringify(activeAds));
-            }
-            return activeAds;
-        }
-
-        // Render standard items, active custom ads, and the conditional creation card block
-        function renderProperties() {
-            const userAds = getUserAds();
-
-            for (const country in staticData) {
-                const container = document.getElementById(country);
-                container.innerHTML = ''; // Clear context
-
-                // 1. Render Default Ads
-                staticData[country].forEach(prop => {
-                    container.innerHTML += createCardHTML(prop, false);
-                });
-
-                // 2. Filter & Render relevant user ads allocated to this country
-                const countryUserAds = userAds.filter(ad => ad.country === country);
-                countryUserAds.forEach(prop => {
-                    container.innerHTML += createCardHTML(prop, true);
-                });
-
-                // 3. Render the submission tile form block
-                container.innerHTML += createFormTileHTML(userAds.length);
-            }
-        }
-
-        function createCardHTML(prop, isUserAd) {
-            return `
-                <div class="bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden border ${isUserAd ? 'border-orange-300 bg-orange-50/20' : 'border-gray-200'} flex flex-col justify-between">
-                    <div class="p-5">
-                        <div class="flex justify-between items-start">
-                            <span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded uppercase tracking-wider">${prop.loc}</span>
-                            ${isUserAd ? '<span class="text-[10px] bg-orange-500 text-white font-bold px-1.5 py-0.5 rounded tracking-wide animate-pulse">USER AD</span>' : ''}
-                        </div>
-                        <h3 class="text-lg font-bold text-gray-900 mt-2 truncate">${prop.title}</h3>
-                        <p class="text-sm text-gray-600 mt-2 line-clamp-2">${prop.desc}</p>
-                    </div>
-                    <div class="p-5 pt-0">
-                        <div class="pt-3 border-t border-gray-100 flex justify-between items-center">
-                            <span class="text-md font-extrabold text-green-600">${prop.price}</span>
-                            <button class="text-xs bg-gray-900 text-white font-medium px-3 py-1.5 rounded hover:bg-blue-600 transition">View Details</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function createFormTileHTML(currentTotalCount) {
-            if (currentTotalCount >= 5) {
-                return `
-                    <div class="bg-gray-100 border-2 border-dashed border-gray-300 rounded-xl p-6 flex flex-col justify-center items-center text-center">
-                        <svg class="w-10 h-10 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                        <h3 class="text-md font-bold text-gray-700">Limit Reached (5/5)</h3>
-                        <p class="text-xs text-gray-500 mt-1 px-4">Global limit full. Wait for old entries to hit the 24-hour limit and expire to post new ads.</p>
-                    </div>
-                `;
-            }
-
-            return `
-                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-dashed border-blue-300 rounded-xl p-5 flex flex-col justify-between">
-                    <form onsubmit="handleFormSubmit(event)" class="space-y-2.5 h-full flex flex-col justify-between">
-                        <div>
-                            <h3 class="text-md font-bold text-blue-900 flex items-center mb-2">
-                                <svg class="w-5 h-5 mr-1 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                                Create New Listing
-                            </h3>
-                            <input type="text" id="form-title" placeholder="Property Title (e.g. 2BHK Flat)" required class="w-full text-xs p-2 border border-gray-300 rounded bg-white focus:ring-1 focus:ring-blue-500 outline-none">
-                            <div class="grid grid-cols-2 gap-2 mt-2">
-                                <input type="text" id="form-loc" placeholder="City, State" required class="w-full text-xs p-2 border border-gray-300 rounded bg-white focus:ring-1 focus:ring-blue-500 outline-none">
-                                <input type="text" id="form-price" placeholder="Price/mo" required class="w-full text-xs p-2 border border-gray-300 rounded bg-white focus:ring-1 focus:ring-blue-500 outline-none">
-                            </div>
-                            <textarea id="form-desc" rows="2" placeholder="Short description..." required class="w-full text-xs p-2 border border-gray-300 rounded bg-white mt-2 resize-none focus:ring-1 focus:ring-blue-500 outline-none"></textarea>
-                        </div>
-                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded text-xs transition shadow-sm">
-                            Publish Live (${currentTotalCount}/5)
-                        </button>
-                    </form>
-                </div>
-            `;
-        }
-
-        // Submitting new item data safely into storage array
-        function handleFormSubmit(event) {
-            event.preventDefault();
-            const userAds = getUserAds();
-
-            if (userAds.length >= 5) {
-                alert("Creation denied. System has already reached the maximum allowance constraint (5 active user ads).");
-                return;
-            }
-
-            const newAd = {
-                id: 'ad-' + Date.now(),
-                country: activeCountry,
-                title: document.getElementById('form-title').value.trim(),
-                loc: document.getElementById('form-loc').value.trim(),
-                price: document.getElementById('form-price').value.trim(),
-                desc: document.getElementById('form-desc').value.trim(),
-                timestamp: Date.now() // Track entry birth time
-            };
-
-            userAds.push(newAd);
-            localStorage.setItem('userRentalAds', JSON.stringify(userAds));
-            renderProperties();
-        }
-
-        // Global Navigation Controls
-        function switchTab(countryId) {
-            activeCountry = countryId;
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('bg-blue-600', 'text-white', 'shadow');
-                btn.classList.add('bg-white', 'text-gray-700', 'hover:bg-gray-200');
-            });
-
-            document.getElementById(countryId).classList.add('active');
-            const activeBtn = document.getElementById(`btn-${countryId}`);
-            activeBtn.classList.remove('bg-white', 'text-gray-700', 'hover:bg-gray-200');
-            activeBtn.classList.add('bg-blue-600', 'text-white', 'shadow');
-            
-            renderProperties();
-        }
-
-        // Init and refresh dynamic properties container layout structure
-        renderProperties();
-        
-        // Background check execution loop structure checking every 30 seconds for expired user properties
-        setInterval(renderProperties, 30000);
-    </script>
-</body>
-</html>
+        <div id="india-cities-bar" class="flex flex-wrap justify-center gap-2 mt-4">
+            <button onclick="filterIndiaCity('all')" id="btn-city-all" class="city-btn text-xs px-4 py-1.5 rounded-full font-semibold bg-gray-900 text-white shadow">All India</button>
+            <button onclick="filterIndiaCity('Bangalore')" id="btn-city-Bangalore" class="city-btn text-xs px-4 py-1.5 rounded-full font-semibold bg-white text-gray-600 hover:bg-gray-200 transition">Bangalore</button>
+            <button onclick="filterIndiaCity('Delhi')" id="btn-city-Delhi" class="city-btn text-xs px-4 py-1.5 rounded-full font-semibold bg-white text-gray-600 hover:bg-gray-200 transition">Delhi</button>
+            <button onclick="filterIndiaCity('Chennai')" id="btn-city-Chennai" class="city-btn text-xs px-4 py-1.5 rounded-full font-semibold bg-white text-gray-600 hover:bg-gray-200 transition">Chennai</button>
+            <button onclick="filterIndiaCity('Hyderabad')" id="btn-city-Hyderabad" class="city-btn text-xs px-4 py-1.5 rounded-full font-semibold bg-white text-gray-600 hover:bg-gray-200 transition">Hyderabad</button>
+            <button onclick="filterIndiaCity('Pune')" id="btn-city-Pune" class="city-btn text-xs px-4 py-1.5 rounded-full font-semibold bg-white text-gray-600 hover:bg-gray-200 transition">Pune</button>
